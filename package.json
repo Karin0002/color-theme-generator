@@ -1,0 +1,41 @@
+{
+  "name": "color-theme-generator",
+  "version": "1.0.0",
+  "description": "Generates random color themes that are based in color theory.",
+  "type": "module",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "keywords": [
+    "colors",
+    "color themes",
+    "colorthemes",
+    "themes"
+  ],
+  "homepage": "https://github.com/Karin0002/color-theme-generator",
+  "repository": {
+    "url": "git+https://github.com/Karin0002/color-theme-generator"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "test": "vitest"
+  },
+  "author": {
+    "name": "Karin Silfversparre",
+    "email": "ks224ac@student.lnu.se"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "@vitest/coverage-v8": "^2.1.1",
+    "eslint": "^9.11.1",
+    "eslint-plugin-tsdoc": "^0.3.0",
+    "globals": "^15.9.0",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.7.0",
+    "vitest": "^2.1.1"
+  }
+}
