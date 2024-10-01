@@ -1,6 +1,6 @@
 {
   "name": "color-theme-generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generates random color themes that are based in color theory.",
   "type": "module",
   "main": "./build/index.js",
