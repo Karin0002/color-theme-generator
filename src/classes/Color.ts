@@ -1,77 +1,62 @@
 import { ArgumentLimits } from '../enums/ArgumentLimits.js'
-import { Guard } from './Guard.js'
+import { ValidationObject } from './ValidationObject.js'
+import { Validator } from './Validator.js'
 
 export class Color {
-  /**
-   * The object to validate arguments with.
-   */
-  #argumentGuard: Guard
+  #validator: Validator
 
   #hue: number
-
   #saturation: number
-
   #lightness: number
-
   #hsl: string
 
-  // Triads, three arguments which is often to many but in this case I made
-  // the decision to accept it since it is a constructor.
   constructor (hue: number, saturation: number, lightness: number) {
-    this.#argumentGuard = new Guard()
-
+    this.#validator = new Validator()
+    this.#validateHue(hue)
     this.#setHue(hue)
+    this.#validateSaturation(saturation)
     this.#setSaturation(saturation)
+    this.#validateLightness(lightness)
     this.#setLightness(lightness)
-
-    this.#setHSL(this.#generateHSLString())
+    this.#setHSL(this.#generateHSL())
   }
 
-  /**
-   * @throws Error if the arguments does not pass the validation.
-   */
-  #setHue (value: number): void {
-    // Mixed abstraction level.
-    // Low-level: variables.
-    // High-level: calling validation method.
-    this.#argumentGuard.validateNumberArgumentWithMaxAndMin({
-      maxValue: ArgumentLimits.HueMax,
-      minValue: ArgumentLimits.HueMin,
-      recievedArgument: value
-    })
+  #validateHue (value: number): void {
+    const validationValues = new ValidationObject(
+      ArgumentLimits.HueMax,
+      ArgumentLimits.HueMin,
+      value
+    )
+    this.#validator.validateNumberArgumentWithMaxAndMin(validationValues)
+  }
 
+  #setHue (value: number): void {
     this.#hue = value
   }
 
-  /**
-   * @throws Error if the arguments does not pass the validation.
-   */
-  #setSaturation (value: number): void {
-    // Mixed abstraction level.
-    // Low-level: variables.
-    // High-level: calling validation method.
-    this.#argumentGuard.validateNumberArgumentWithMaxAndMin({
-      maxValue: ArgumentLimits.SaturationMax,
-      minValue: ArgumentLimits.SaturationMin,
-      recievedArgument: value
-    })
+  #validateSaturation (value: number): void {
+    const validationValues = new ValidationObject(
+      ArgumentLimits.SaturationMax,
+      ArgumentLimits.SaturationMin,
+      value
+    )
+    this.#validator.validateNumberArgumentWithMaxAndMin(validationValues)
+  }
 
+  #setSaturation (value: number): void {
     this.#saturation = value
   }
 
-  /**
-   * @throws Error if the arguments does not pass the validation.
-   */
-  #setLightness (value: number): void {
-    // Mixed abstraction level.
-    // Low-level: variables.
-    // High-level: calling validation method.
-    this.#argumentGuard.validateNumberArgumentWithMaxAndMin({
-      maxValue: ArgumentLimits.LightnessMax,
-      minValue: ArgumentLimits.LightnessMin,
-      recievedArgument: value
-    })
+  #validateLightness (value: number): void {
+    const validationValues = new ValidationObject(
+      ArgumentLimits.LightnessMax,
+      ArgumentLimits.LightnessMin,
+      value
+    )
+    this.#validator.validateNumberArgumentWithMaxAndMin(validationValues)
+  }
 
+  #setLightness (value: number): void {
     this.#lightness = value
   }
 
@@ -84,7 +69,7 @@ export class Color {
    *
    * @returns A string formatted as a HSL color.
    */
-  #generateHSLString (): string {
+  #generateHSL (): string {
     return `hsl(${this.#hue}, ${this.#saturation}%, ${this.#lightness}%)`
   }
 

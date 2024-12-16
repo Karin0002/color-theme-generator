@@ -1,50 +1,39 @@
-import { ColorThemes } from '../enums/ColorThemes.js'
 import { Color } from './Color.js'
-import { Guard } from './Guard.js'
+import { ColorThemes } from '../enums/ColorThemes.js'
+import { Validator } from './Validator.js'
 
 export class ColorThemeData {
-  /**
-   * The object to validate arguments with.
-   */
-  #argumentGuard: Guard
-
-  #colorsInTheme: Color[]
+  #validator: Validator
 
   /**
    * The name of the color theme.
    */
   #colorTheme: ColorThemes
-
+  #colorsInTheme: Color[]
   #numberOfColorsInTheme: number
 
-  /**
-   * Creates a new Color object.
-   *
-   * @param colorTheme - The name of the colorTheme.
-   * @param colors - The colors in the theme.
-   */
   constructor (colorTheme: ColorThemes, colors: Color[]) {
-    this.#argumentGuard = new Guard()
+    this.#validator = new Validator()
+    this.#validateColorTheme(colorTheme)
     this.#setColorTheme(colorTheme)
+    this.#validateColorsInTheme(colors)
     this.#setColorsInTheme(colors)
     this.#setNumberOfColorsInTheme()
   }
 
-  #setColorTheme (theme: ColorThemes): void {
-    // Mixed abstraction levels.
-    // Low-level: variables.
-    // High-level: calls method.
-    this.#argumentGuard.validateColorThemesArgument(theme)
+  #validateColorTheme (theme: ColorThemes): void {
+    this.#validator.validateColorThemesArgument(theme)
+  }
 
+  #setColorTheme (theme: ColorThemes): void {
     this.#colorTheme = theme
   }
 
-  #setColorsInTheme (colors: Color[]): void {
-    // Mixed abstraction levels.
-    // Low-level: variables.
-    // High-level: calls method.
-    this.#argumentGuard.validateColorArrayArgument(colors)
+  #validateColorsInTheme (colors: Color[]): void {
+    this.#validator.validateColorArrayArgument(colors)
+  }
 
+  #setColorsInTheme (colors: Color[]): void {
     this.#colorsInTheme = colors
   }
 
@@ -52,20 +41,28 @@ export class ColorThemeData {
     this.#numberOfColorsInTheme = this.#colorsInTheme.length
   }
 
+  /**
+   * The colors in the theme.
+   *
+   * @returns An array of the colors.
+   */
   get colorsInTheme (): Color[] {
-    // Mixed abstraction levels.
-    // Low-level: array.push, loop.
-    // High-level: initiates objects.
     // Copies the colors since they are refrence types.
     const copyOfColors = []
     for (const color of this.#colorsInTheme) {
-      const copyOfColor = new Color(color.hue, color.saturation, color.lightness)
-      copyOfColors.push(copyOfColor)
+      copyOfColors.push(this.#copyColor(color))
     }
 
     return copyOfColors
   }
 
+  #copyColor (color: Color): Color {
+    return new Color(color.hue, color.saturation, color.lightness)
+  }
+
+  /**
+   * The name of the theme.
+   */
   get colorTheme (): ColorThemes {
     return this.#colorTheme
   }
@@ -75,26 +72,23 @@ export class ColorThemeData {
   }
 
   /**
-   * Sorts the colors by hue in ascending order.
+   * Sorts the colors in the theme by hue in ascending order.
    */
   sortColorsByHue (): void {
-    // Does not return colors because of command query separation.
     this.#colorsInTheme.sort((a, b) => a.hue - b.hue)
   }
 
   /**
-   * Sorts the colors by saturation in ascending order.
+   * Sorts the colors in the theme by saturation in ascending order.
    */
   sortColorsBySaturation (): void {
-    // Does not return colors because of command query separation.
     this.#colorsInTheme.sort((a, b) => a.saturation - b.saturation)
   }
 
   /**
-   * Sorts the colors by lightness in ascending order.
+   * Sorts the colors in the theme by lightness in ascending order.
    */
   sortColorsByLightness (): void {
-    // Does not return colors because of command query separation.
     this.#colorsInTheme.sort((a, b) => a.lightness - b.lightness)
   }
 }
